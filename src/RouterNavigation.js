@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import NavBarComponent from "./components/NavBar";
-import FaqPage from "./pages/FaqPage";
+import FaqPage from "./pages/faq/FaqPage";
 import LoginPage from "./pages/LoginPage";
 
 const AuthNavigation = ()=>{
