@@ -1,34 +1,23 @@
-import { Button, Drawer, Group, Input, InputWrapper, ScrollArea, Select, Stack } from "@mantine/core";
+import { Button, Drawer, Group, Input, InputWrapper, ScrollArea, Stack } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Check, X } from "tabler-icons-react";
 import { base_url } from "../../config/baseUrl";
-import FaqTopicEntity from "../../entity/FaqTopicEntity";
+import RegulationCategoryEntity from "../../entity/RegulationCategoryEntity";
 
-const AddTopicFaqDrawer = () => {
+const AddRegulationCategoryDrawer = () => {
     const [open, setOpen] = useState(false);
-    const [topic, setTopic] = useState([]);
-    const [form, setForm] = useState(FaqTopicEntity);
+    const [category, setCategory] = useState([]);
+    const [form, setForm] = useState(RegulationCategoryEntity)
     const [isLoading, setIsLoading] = useState(false);
-
-    const refreshTopic = () => {
-        axios.get(`${base_url}/faq-topic`).then((res) => {
-            setTopic(res.data.data)
-        })
-    }
-
-    useEffect(() => {
-        axios.get(`${base_url}/faq-topic`).then((res) => {
-            setTopic(res.data.data)
-        })
-    }, [])
+    const slug = "ciptaker-categories";
 
     const topicColumns = [
         {
-            field: 'title',
-            headerName: 'Topic Title',
+            field: 'name',
+            headerName: 'Category Name',
             flex: 1
         },
         {
@@ -44,9 +33,21 @@ const AddTopicFaqDrawer = () => {
         }
     ]
 
+    const refreshTopic = () => {
+        axios.get(`${base_url}/${slug}`).then((res) => {
+            setCategory(res.data.data)
+        })
+    }
+
+    useEffect(() => {
+        axios.get(`${base_url}/${slug}`).then((res) => {
+            setCategory(res.data.data)
+        })
+    }, [])
+
     const onDelete = (id) => {
         setIsLoading(true);
-        axios.delete(`${base_url}/faq-topic/${id}`, form)
+        axios.delete(`${base_url}/${slug}/${id}`, form)
             .then(res => {
                 setIsLoading(false);
                 refreshTopic();
@@ -55,7 +56,7 @@ const AddTopicFaqDrawer = () => {
                     autoClose: 5000,
                     icon: <Check />,
                     color: 'green',
-                    message: 'Faq Topic has been deleted'
+                    message: 'Regulation Category has been deleted'
                 })
 
             }).catch(err => {
@@ -64,7 +65,7 @@ const AddTopicFaqDrawer = () => {
                 showNotification({
                     title: 'Error',
                     autoClose: 5000,
-                    icon: <X />,
+                    icon: <X/>,
                     color: 'red',
                     message: 'Error occured'
                 })
@@ -73,17 +74,17 @@ const AddTopicFaqDrawer = () => {
 
     const onSubmit = () => {
         setIsLoading(true);
-        axios.post(`${base_url}/faq-topic`, form)
+        axios.post(`${base_url}/${slug}`, form)
             .then(res => {
                 setIsLoading(false);
                 refreshTopic();
-                setForm(FaqTopicEntity)
+                setForm(RegulationCategoryEntity)
                 showNotification({
                     title: 'Success',
                     autoClose: 5000,
                     icon: <Check />,
                     color: 'green',
-                    message: 'Faq Topic has been added'
+                    message: 'Regulation Category has been added'
                 })
 
             }).catch(err => {
@@ -105,21 +106,21 @@ const AddTopicFaqDrawer = () => {
             <Drawer
                 opened={open}
                 onClose={() => { setOpen(false) }}
-                title="Add Faq Topic"
+                title="Add Regulation Category"
                 padding={"xl"}
                 size={"xl"}
                 position={"left"}
             >
                 <ScrollArea style={{ height: '85vh' }}>
                     <Stack>
-                        <InputWrapper label="Topic Name" required>
-                            <Input value={form.title} onChange={(ev) => setForm({ ...form, title: ev.target.value })} />
+                        <InputWrapper label="Category Name" required>
+                            <Input value={form.title} onChange={(ev) => setForm({ ...form, name: ev.target.value })} />
                         </InputWrapper>
                         <Group>
                             <Button onClick={onSubmit} loading={isLoading}>Save</Button>
-                            <Button onClick={() => { setOpen(false); setForm(FaqTopicEntity) }}>Cancel</Button>
+                            <Button onClick={() => { setOpen(false); setForm(RegulationCategoryEntity) }}>Cancel</Button>
                         </Group>
-                        <DataGrid sx={{ minHeight: 500 }} columns={topicColumns} rows={topic} />
+                        <DataGrid sx={{ minHeight: 500 }} columns={topicColumns} rows={category} />
                     </Stack>
                 </ScrollArea>
 
@@ -128,4 +129,4 @@ const AddTopicFaqDrawer = () => {
     )
 }
 
-export default AddTopicFaqDrawer
+export default AddRegulationCategoryDrawer

@@ -1,6 +1,7 @@
-import { Button, Drawer, Group, Input, InputWrapper, Select, Stack } from "@mantine/core";
+import { Button, Drawer, Group, Input, InputWrapper, ScrollArea, Select, Stack } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import RichTextEditor from "@mantine/rte";
+import { Editor } from "@tinymce/tinymce-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Check, X } from "tabler-icons-react";
@@ -64,22 +65,24 @@ const EditFaqDrawer = ({ data, refreshQuestion }) => {
                 size={"xl"}
                 position={"left"}
             >
-                <Stack>
-                    {/* <InputWrapper label="Topic" required>
+                <ScrollArea style={{ height: '85vh' }}>
+                    <Stack>
+                        {/* <InputWrapper label="Topic" required>
                         <Input value={selectedQuestion.topic} onChange={(ev) => setSelectedQuestion({ ...selectedQuestion, topic: ev.target.value })} />
                     </InputWrapper> */}
-                    <Select label="Topic" placeholder="Pick one" data={topic} defaultValue={selectedQuestion.topic_id} onChange={(val) => setSelectedQuestion({ ...selectedQuestion, topic_id: val })} required />
-                    <InputWrapper label="Question" required>
-                        <Input value={selectedQuestion.question} onChange={(ev) => setSelectedQuestion({ ...selectedQuestion, question: ev.target.value })} />
-                    </InputWrapper>
-                    <InputWrapper label="Answer" required>
-                        <RichTextEditor value={selectedQuestion.answer} onChange={(val) => setSelectedQuestion({ ...selectedQuestion, answer: val })} />
-                    </InputWrapper>
-                    <Group>
-                        <Button onClick={onSubmitEdit} loading={isLoading}>Save</Button>
-                        <Button onClick={() => { setOpen(false); setSelectedQuestion({}) }}>Cancel</Button>
-                    </Group>
-                </Stack>
+                        <Select label="Topic" placeholder="Pick one" data={topic} defaultValue={selectedQuestion.topic_id} onChange={(val) => setSelectedQuestion({ ...selectedQuestion, topic_id: val })} required />
+                        <InputWrapper label="Question" required>
+                            <Input value={selectedQuestion.question} onChange={(ev) => setSelectedQuestion({ ...selectedQuestion, question: ev.target.value })} />
+                        </InputWrapper>
+                        <InputWrapper label="Answer" required>
+                            <RichTextEditor value={selectedQuestion.answer} onChange={(val) => setSelectedQuestion({ ...selectedQuestion, answer: val })} />
+                        </InputWrapper>
+                        <Group>
+                            <Button onClick={onSubmitEdit} loading={isLoading}>Save</Button>
+                            <Button onClick={() => { setOpen(false); setSelectedQuestion({}) }}>Cancel</Button>
+                        </Group>
+                    </Stack>
+                </ScrollArea>
             </Drawer>
         </>
     )

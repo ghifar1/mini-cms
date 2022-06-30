@@ -1,8 +1,8 @@
-import { Button, Drawer, Group, Input, InputWrapper, Select, Stack } from "@mantine/core";
+import { Button, Drawer, Group, Input, InputWrapper, ScrollArea, Select, Stack } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import RichTextEditor from "@mantine/rte";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, X } from "tabler-icons-react";
 import { base_url } from "../../config/baseUrl";
 import FaqEntity from "../../entity/FaqEntity";
@@ -21,7 +21,7 @@ const AddFaqDrawer = ({ refreshQuestion }) => {
             });
             setTopic(dataConvert)
         })
-    }, [])
+    }, [open])
 
     const onSubmit = () => {
         setIsLoading(true);
@@ -67,22 +67,24 @@ const AddFaqDrawer = ({ refreshQuestion }) => {
                 size={"xl"}
                 position={"left"}
             >
-                <Stack>
-                    {/* <InputWrapper label="Topic" required>
+                <ScrollArea style={{height: '85vh'}}>
+                    <Stack>
+                        {/* <InputWrapper label="Topic" required>
                         <Input value={form.topic} onChange={(ev) => setForm({ ...form, topic: ev.target.value })} />
                     </InputWrapper> */}
-                    <Select label="Topic" placeholder="Pick one" data={topic} onChange={(val) => setForm({ ...form, topic_id: val })} required />
-                    <InputWrapper label="Question" required>
-                        <Input value={form.question} onChange={(ev) => setForm({ ...form, question: ev.target.value })} />
-                    </InputWrapper>
-                    <InputWrapper label="Answer" required>
+                        <Select label="Topic" placeholder="Pick one" data={topic} onChange={(val) => setForm({ ...form, topic_id: val })} required />
+                        <InputWrapper label="Question" required>
+                            <Input value={form.question} onChange={(ev) => setForm({ ...form, question: ev.target.value })} />
+                        </InputWrapper>
+                        <InputWrapper label="Answer" required>
                         <RichTextEditor value={form.answer} onChange={(val) => setForm({ ...form, answer: val })} />
-                    </InputWrapper>
-                    <Group>
-                        <Button onClick={onSubmit} loading={isLoading}>Save</Button>
-                        <Button onClick={() => { setOpen(false); setForm({}) }}>Cancel</Button>
-                    </Group>
-                </Stack>
+                        </InputWrapper>
+                        <Group>
+                            <Button onClick={onSubmit} loading={isLoading}>Save</Button>
+                            <Button onClick={() => { setOpen(false); setForm({}) }}>Cancel</Button>
+                        </Group>
+                    </Stack>
+                </ScrollArea>
             </Drawer>
         </>
     )
