@@ -1,14 +1,21 @@
 import { AppShell, Burger, Group, Header, MediaQuery, Navbar, Text, ThemeIcon, UnstyledButton, useMantineTheme } from "@mantine/core"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LayoutList, QuestionMark } from "tabler-icons-react";
+import { DoorExit, LayoutList, QuestionMark } from "tabler-icons-react";
+import Cookies from "universal-cookie";
 
 const MainLink = ({ icon, color, label, to }) => {
     const navigate = useNavigate();
+    const cookie = new Cookies()
 
     return (
         <UnstyledButton
-            onClick={() => navigate(to)}
+            onClick={() => {
+                if (to == "/") {
+                    cookie.remove("biskuit", { path: '/' })
+                }
+                navigate(to)
+            }}
             sx={(theme) => ({
                 display: 'block',
                 width: '100%',
@@ -48,6 +55,7 @@ const NavBarComponent = (props) => {
                 <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
                     <MainLink label={"Faq"} icon={<QuestionMark />} to="/a/faq" />
                     <MainLink label={"Regulasi"} icon={<LayoutList />} to="/a/regulation" />
+                    <MainLink label={"Logout"} icon={<DoorExit />} to="/" />
                 </Navbar>
             }
             header={
